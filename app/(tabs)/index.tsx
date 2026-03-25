@@ -1,5 +1,6 @@
 import MovieCard from "@/components/MovieCard";
 import SearchBar from "@/components/SearchBar";
+import TrendindMovieCard from "@/components/TrendindMovieCard";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
 import { fetchMovies } from "@/services/api";
@@ -53,10 +54,10 @@ export default function Index() {
               placeholder="Search for a movie"
               onPress={() => router.push("/search")}
             />
-            {trendingMovies && trendingMovies?.length > 0 && (
+            {trendingMovies && (
               <View className="mt-10">
                 <Text className="text-lg text-white font-bold mb-3">
-                  Trending Movies
+                  Discover New Movies
                 </Text>
               </View>
             )}
@@ -67,8 +68,8 @@ export default function Index() {
                 showsHorizontalScrollIndicator={false}
                 ItemSeparatorComponent={() => <View className="w-4" />}
                 data={trendingMovies}
-                renderItem={({ item }) => (
-                  <Text className="text-white">{item.title}</Text>
+                renderItem={({ item, index }) => (
+                  <TrendindMovieCard movie={item} index={index} />
                 )}
                 keyExtractor={(item) => item.movie_id.toString()}
               />

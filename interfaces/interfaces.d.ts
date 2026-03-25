@@ -4,7 +4,12 @@ interface Movie {
   adult: boolean;
   backdrop_path: string;
   genre_ids: number[];
+  genres?: { name: string }[];
   original_language: string;
+  revenue?: number;
+  budget?: number;
+  runtime?: number;
+  production_companies?: { name: string }[];
   original_title: string;
   overview: string;
   popularity: number;
@@ -14,7 +19,6 @@ interface Movie {
   vote_average: number;
   vote_count: number;
 }
-
 
 export interface TrendingMovie {
   searchTerm: string;

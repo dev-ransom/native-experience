@@ -55,7 +55,7 @@ export const getTrendingMovies = async (): Promise<
     const result = await database.listRows({
       databaseId: DATABASE_ID,
       tableId: COLLECTION_ID,
-      queries: [Query.limit(5), Query.orderDesc("count")],
+      queries: [Query.limit(9), Query.orderDesc("count")],
     });
 
     return result.rows as unknown as TrendingMovie[];
