@@ -1,9 +1,17 @@
 import { icons } from "@/constants/icons";
 import { fetchMovieDetails } from "@/services/api";
 import useFetch from "@/services/useFetch";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import React from "react";
-import { Image, ScrollView, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface MovieInfoProps {
   label: string;
@@ -20,11 +28,19 @@ const MovieInfo = ({ label, value }: MovieInfoProps) => (
 );
 
 const MovieDetails = () => {
+  const router = useRouter();
   const { id } = useLocalSearchParams();
   const { data: movie, loading } = useFetch(() =>
     fetchMovieDetails(id as string),
   );
 
+  if (loading) {
+    return (
+      <SafeAreaView className="bg-primary flex-1">
+        <ActivityIndicator className="text-white mt-[50%]" />
+      </SafeAreaView>
+    );
+  }
   return (
     <View className="bg-primary flex-1">
       <ScrollView
@@ -78,15 +94,26 @@ const MovieDetails = () => {
               value={`$${Math.round(movie?.revenue as number) / 1_000_000}`}
             />
           </View>
-            <MovieInfo
-              label="Production Companies"
-              value={
-                movie?.production_companies?.map((c) => c.name).join(" • ") ||
-                "N/A"
-              }
-            />
+          <MovieInfo
+            label="Production Companies"
+            value={
+              movie?.production_companies?.map((c) => c.name).join(" • ") ||
+              "N/A"
+            }
+          />
         </View>
       </ScrollView>
+      <TouchableOpacity
+        onPress={router.back}
+        className="absolute left-0 right-0 mx-5 py-3.5 bottom-5 bg-accent flex flex-row justify-center items-center z-50"
+      >
+        <Image
+          source={icons.arrow}
+          className="rotate-180 mt-0.5 mr-1 size-5"
+          tintColor="#fff"
+        />
+        <Text className="text-base text-white font-bold">Go back</Text>
+      </TouchableOpacity>
     </View>
   );
 };

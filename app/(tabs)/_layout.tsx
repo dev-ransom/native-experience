@@ -1,6 +1,7 @@
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
-import { Tabs } from "expo-router";
+import { useAuth } from "@/context/AuthContext";
+import { Redirect, Tabs } from "expo-router";
 import React from "react";
 import { Image, ImageBackground, Text, View } from "react-native";
 
@@ -25,6 +26,10 @@ const TabIcon = ({ focused, title, icon }: any) => {
   );
 };
 const _layout = () => {
+  const { user, loading } = useAuth();
+
+  if (loading) return <View className="flex-1 bg-primary" />;
+  if (!user) return <Redirect href="/(auth)/sign-in" />;
   return (
     <Tabs
       screenOptions={{
